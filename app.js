@@ -1,7 +1,7 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-const inquirer = require("inquirer");
+const Inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 // const util = require("util");
@@ -113,3 +113,66 @@ const internQuestion = [
 ];
 
 
+let init =
+    async function adminStart() {
+
+        await Inquirer
+            .prompt(adminQuestions)
+
+            .then(async function (userData) {
+                let managerInfo = {
+                    'name': userData.name,
+                    'id': JSON.parse(userData.id),
+                    'email': userData.email,
+                    'role': 'employee',
+                    'title': 'manager',
+                    'officeNumber': '',
+                    'gitname': '',
+                    'github': '',
+                    'school': ''
+
+                }
+                if (position = true) {
+                    employeeData.push(managerInfo)
+                    newEmployee()
+                }
+            })
+    }
+let secondAdmin =
+    async function adminNext() {
+        await Inquirer
+            .prompt(adminChoices)
+            .then(async function (answers) {
+                if (answers.adminchoice === 'Add an employee to the team?') {
+                    employeeInfo.length = 0;
+                    input()
+                }
+                if (answers.adminchoice === 'Create the team HTML page?') {
+                    createteam()
+                }
+            })
+    };
+
+let input =
+    async function initialize() {
+        await Inquirer
+            .prompt(questions)
+
+            .then(async function (userData) {
+                let userInfo = {
+                    'name': userData.name,
+                    'id': JSON.parse(userData.id),
+                    'email': userData.email,
+                    'role': 'employee', // DEFAULT
+                    'title': userData.title,
+                    'officeNumber': '',
+                    'gitname': '',
+                    'github': '',
+                    'school': ''
+                }
+                employeeData.push(userInfo)
+                newEmployee()
+            })
+    };
+
+init();
