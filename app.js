@@ -35,7 +35,7 @@ const adminOptions = [
 const adminQuestions = [
     {
         type: "input",
-        message: "Hello manager, what is your name?",
+        message: "Hello, what is your name?",
         name: "name"
     },
     {
@@ -99,7 +99,7 @@ const engineerQuestion = [
     {
         type: "input",
         message: "What is the employee's GithUb username?",
-        name: "gitusername"
+        name: "gitname"
     }
 
 ];
@@ -144,12 +144,13 @@ let secondAdmin =
         await Inquirer
             .prompt(adminOptions)
             .then(async function (answers) {
-                if (answers.adminchoice === 'Add an employee to the team?') {
+                if (answers.adminOptions === 'Add an employee to the team?') {
                     employeeData.length = 0;
-                    input()
+                    input();
                 }
-                if (answers.adminchoice === 'Create the team HTML page?') {
-                    createteam()
+                if (answers.adminOptions === 'Create the team HTML page?') {
+                    createteam();
+
                 }
             })
     };
@@ -164,7 +165,7 @@ let input =
                     'name': userData.name,
                     'id': JSON.parse(userData.id),
                     'email': userData.email,
-                    'role': 'employee', // DEFAULT
+                    'role': 'employee',
                     'title': userData.title,
                     'officeNumber': '',
                     'gitname': '',
@@ -237,6 +238,8 @@ async function buildEngineer() {
                 'gitname': userData.gitname
             }
             employeeData[0].gitname = engineerInfo.gitname;
+
+
             const name = employeeData[0].name;
             const id = employeeData[0].id;
             const email = employeeData[0].email;
@@ -274,6 +277,8 @@ async function buildIntern() {
     internArray.push(intern)
     secondAdmin()
 };
+
+
 createteam =
     async function teamHTML() {
 
