@@ -1,3 +1,4 @@
+const Employee = require('./lib/employee');
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -141,10 +142,10 @@ let init =
 let secondAdmin =
     async function adminNext() {
         await Inquirer
-            .prompt(adminChoices)
+            .prompt(adminOptions)
             .then(async function (answers) {
                 if (answers.adminchoice === 'Add an employee to the team?') {
-                    employeeInfo.length = 0;
+                    employeeData.length = 0;
                     input()
                 }
                 if (answers.adminchoice === 'Create the team HTML page?') {
@@ -177,10 +178,10 @@ let input =
 
 let newEmployee =
     async function employeeprofile() {
-        const name = employeeInfo[0].name;
-        const id = employeeInfo[0].id;
-        const email = employeeInfo[0].email;
-        const role = employeeInfo[0].role;
+        const name = employeeData[0].name;
+        const id = employeeData[0].id;
+        const email = employeeData[0].email;
+        const role = employeeData[0].role;
 
         const employee = new Employee(name, id, email, role)
         classBuilder()
@@ -191,13 +192,13 @@ let newEmployee =
 let classBuilder =
     async function bytitle() {
 
-        if (employeeInfo[0].title === "manager") {
+        if (employeeData[0].title === "manager") {
             buildManager()
         }
-        if (employeeInfo[0].title === "engineer") {
+        if (employeeData[0].title === "engineer") {
             buildEngineer()
         }
-        if (employeeInfo[0].title === "intern") {
+        if (employeeData[0].title === "intern") {
             buildIntern()
         }
     };
@@ -211,16 +212,16 @@ async function buildManager() {
             let managerAns = {
                 'officeNumber': JSON.parse(userData.officeNumber)
             }
-            employeeInfo[0].officeNumber = managerAns.officeNumber;
+            employeeData[0].officeNumber = managerAns.officeNumber;
 
-            const name = employeeInfo[0].name;
-            const id = employeeInfo[0].id;
-            const email = employeeInfo[0].email;
-            const role = employeeInfo[0].role;
-            const officeNumber = employeeInfo[0].officeNumber;
+            const name = employeeData[0].name;
+            const id = employeeData[0].id;
+            const email = employeeData[0].email;
+            const role = employeeData[0].role;
+            const officeNumber = employeeData[0].officeNumber;
 
             const manager = new Manager(name, id, email, officeNumber)
-            managerArr.push(manager);
+            managerArray.push(manager);
 
         })
 
@@ -235,25 +236,134 @@ async function buildEngineer() {
             let engineerInfo = {
                 'gitname': userData.gitname
             }
-            employeeInfo[0].gitname = engineerInfo.gitname;
-            const name = employeeInfo[0].name;
-            const id = employeeInfo[0].id;
-            const email = employeeInfo[0].email;
-            const role = employeeInfo[0].role;
-            const gitname = employeeInfo[0].gitname;
-            const github = employeeInfo[0].github;
+            employeeData[0].gitname = engineerInfo.gitname;
+            const name = employeeData[0].name;
+            const id = employeeData[0].id;
+            const email = employeeData[0].email;
+            const role = employeeData[0].role;
+            const gitname = employeeData[0].gitname;
+            const github = employeeData[0].github;
 
             const engineer = new Engineer(name, id, email, gitname, github)
 
-            engineerArr.push(engineer)
+            engineerArray.push(engineer)
 
 
         })
-    next()
+    secondAdmin()
 
 };
 
+async function buildIntern() {
+    await Inquirer
+        .prompt(internQuestion)
+
+        .then(async function (userData) {
+            let internInfo = {
+                'school': userData.school
+            }
+            employeeData[0].school = internInfo.school;
+        })
+    const name = employeeData[0].name;
+    const id = employeeData[0].id;
+    const email = employeeData[0].email;
+    const role = employeeData[0].role;
+    const school = employeeData[0].school;
+
+    const intern = new Intern(name, id, email, school);
+    internArray.push(intern)
+    secondAdmin()
+};
+createteam =
+    async function teamHTML() {
 
 
+        fs.writeFileSync('./output/mainpage.html',
+            '<DOCTYPE! HTML>' +
+            '<html>' +
+            '<head>' +
+            '<meta charset="UTF-8">' +
+            '<link rel="stylesheet" type="text/css" href="style.css">' +
+            '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>' +
+            '<meta name="viewport" content="width=device-width, initial-scale=1.0"/> ' +
+            '<meta http-equiv="X-UA-Compatible" content="ie=edge" />' +
+            '</head>' +
+            '<body>' +
+            '<header>' +
+            '<h1>' + 'Company Team Page' + '</h1>' +
+            '</header>' +
+            '<container>' +
+            '<div class="row">' +
+            '<div class="col-sm-10">'
+        );
+
+        fs.appendFileSync('./output/mainpage.html',
+            '<div id="manager">' +
+            '<div class="card">' +
+            '<div class="card-header bg-info">' + managerArray[0].name + '</div>' +
+            '<div class="card-body">' +
+            '<div class=content>' +
+
+            '<p>' + "ID: " + managerArray[0].id + '</p>' + '<hr>' +
+            '<p>' + "Email: " + managerArray[0].email + '</p>' + '<hr>' +
+            '<p>' + "Office Number: " + managerArray[0].officeNumber + '</p>' + '<hr>' +
+
+            '</div>' +
+            '</div>' +
+            '<div class="card-footer bg-info">' + "Manager" + '</div>' +
+            '</div>' +
+            '</div>'
+        );
+
+        for (i = 0; i < engineerArray.length; i++) {
+            fs.appendFileSync('./output/mainpage.html',
+                '<div id="engineer">' +
+                '<div class="card">' +
+                '<div class="card-header bg-primary">' + engineerArray[i].name + '</div>' +
+                '<div class="card-body">' +
+                '<div class=content>' +
+
+                '<p>' + "ID: " + engineerArray[i].id + '</p>' + '<hr>' +
+                '<p>' + "Email " + engineerArray[i].email + '</p>' + '<hr>' +
+                '<p>' + "GitHub username: " + engineerArray[i].gitname + '</p>' + '<hr>' +
+
+                '</div>' +
+                '</div>' +
+                '<div class="card-footer bg-primary">' + 'Engineer' + '</div>' +
+                '</div>' +
+                '</div>'
+            );
+        }
+
+        for (i = 0; i < internArray.length; i++) {
+            fs.appendFileSync('./output/mainpage.html',
+                '<div id="intern">' +
+                '<div class="card">' +
+                '<div class="card-header bg-success">' + internArray[i].name + '</div>' +
+                '<div class="card-body">' +
+                '<div class=content>' +
+
+                '<p>' + "ID: " + internArray[i].id + '</p>' + '<hr>' +
+                '<p>' + "Email: " + internArray[i].email + '</p>' + '<hr>' +
+                '<p>' + "School: " + internArray[i].school + '</p>' + '<hr>' +
+
+                '</div>' +
+                '</div>' +
+                '<div class="card-footer bg-success">' + 'Intern' + '</div>' +
+                '</div>' +
+                '</div>'
+            );
+        }
+
+        fs.appendFileSync('./output/mainpage.html',
+            '</div>' +
+            '</div>' +
+            '</container>' +
+            '</body>' +
+            '</html>'
+        );
+
+        console.log('Your html file for the team page is in the output folder')
+    }
 
 init();
