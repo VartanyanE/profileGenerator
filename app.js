@@ -175,4 +175,85 @@ let input =
             })
     };
 
+let newEmployee =
+    async function employeeprofile() {
+        const name = employeeInfo[0].name;
+        const id = employeeInfo[0].id;
+        const email = employeeInfo[0].email;
+        const role = employeeInfo[0].role;
+
+        const employee = new Employee(name, id, email, role)
+        classBuilder()
+    };
+
+
+
+let classBuilder =
+    async function bytitle() {
+
+        if (employeeInfo[0].title === "manager") {
+            buildManager()
+        }
+        if (employeeInfo[0].title === "engineer") {
+            buildEngineer()
+        }
+        if (employeeInfo[0].title === "intern") {
+            buildIntern()
+        }
+    };
+
+async function buildManager() {
+
+    await Inquirer
+        .prompt(managerQuestion)
+
+        .then(async function (userData) {
+            let managerAns = {
+                'officeNumber': JSON.parse(userData.officeNumber)
+            }
+            employeeInfo[0].officeNumber = managerAns.officeNumber;
+
+            const name = employeeInfo[0].name;
+            const id = employeeInfo[0].id;
+            const email = employeeInfo[0].email;
+            const role = employeeInfo[0].role;
+            const officeNumber = employeeInfo[0].officeNumber;
+
+            const manager = new Manager(name, id, email, officeNumber)
+            managerArr.push(manager);
+
+        })
+
+    secondAdmin()
+};
+
+async function buildEngineer() {
+    await Inquirer
+        .prompt(engineerQuestion)
+
+        .then(async function (userData) {
+            let engineerInfo = {
+                'gitname': userData.gitname
+            }
+            employeeInfo[0].gitname = engineerInfo.gitname;
+            const name = employeeInfo[0].name;
+            const id = employeeInfo[0].id;
+            const email = employeeInfo[0].email;
+            const role = employeeInfo[0].role;
+            const gitname = employeeInfo[0].gitname;
+            const github = employeeInfo[0].github;
+
+            const engineer = new Engineer(name, id, email, gitname, github)
+
+            engineerArr.push(engineer)
+
+
+        })
+    next()
+
+};
+
+
+
+
 init();
